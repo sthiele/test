@@ -7,36 +7,38 @@ def test1():
     pos = Position('', 0, 0)
     loc = Location(pos, pos)
 
-    sym1 = Number(42)
-    print(sym1)
-    sym2 = String("test")
-    print(sym2)
+    symbols = [];
+    sym = Function("test", symbols, True)
+    print(sym)
 
-    symbols = [sym1, sym2];
-    sym3 = Function("fun1", symbols, True)
-    print(sym3)
+    term = ast.SymbolicTerm(loc, sym)
+    print(term)
 
-    term1 = ast.SymbolicTerm(loc, sym1)
-    print(term1)
-    term2 = ast.SymbolicTerm(loc, sym2)
-    print(term2)
-    term3 = ast.SymbolicTerm(loc, sym3)
-    print(term3)
-
-    bc = ast.BooleanConstant(True)
-    lit = ast.Literal(loc, ast.Sign.NoSign, bc)
-    print(lit)
-    satm = ast.SymbolicAtom(term1)
-    lit = ast.Literal(loc, ast.Sign.NoSign, satm)
-    print(lit)
+    terms = [term];
+    th_seq_set = ast.TheorySequence(loc, ast.TheorySequenceType.Set, terms)
+    print(th_seq_set)
     
-    gt = ast.ComparisonOperator.GreaterThan
-    guard = ast.Guard(gt, term2)
-    print(guard)
-    comp = ast.Comparison(term3, [guard])
-    print(comp)
-    lit = ast.Literal(loc, ast.Sign.NoSign, comp)
-    result = str(lit)
-    assert result == "fun1(42,\"test\") > \"test\""
+    result = str(th_seq_set)
+    assert result == "{test}"
+
+def test2():
+
+    pos = Position('', 0, 0)
+    loc = Location(pos, pos)
+
+    symbols = [];
+    sym = Function("test", symbols, True)
+    print(sym)
+
+    term = ast.SymbolicTerm(loc, sym)
+    print(term)
+
+    terms = [term];
+    th_seq_list = ast.TheorySequence(loc, ast.TheorySequenceType.List, terms)
+    print(th_seq_list)
+    
+    result = str(th_seq_list)
+    assert result == "[test]"
 
 test1()
+test2()
